@@ -1,0 +1,203 @@
+Liam's Bachelor Party Website 🎉
+
+A modern, interactive bachelor party website with persistent comments and photo upload functionality.
+Features
+
+    Interactive countdown timer to the party date
+    Photo upload for the groom's picture (persistent storage)
+    Comment system for guests to leave messages
+    Real-time data persistence using Node.js backend
+    Beautiful, responsive design with animations and effects
+    File upload validation and error handling
+
+Setup Instructions
+Prerequisites
+
+    Node.js (version 16 or higher)
+    npm (comes with Node.js)
+
+Installation
+
+    Clone or download the project files
+    Install dependencies
+
+    bash
+
+    npm install
+
+    Create the folder structure
+
+    your-project/
+    ├── server.js
+    ├── package.json
+    ├── public/
+    │   └── index.html
+    ├── uploads/
+    │   └── photos/
+    └── data/
+
+    Place the HTML file
+        Put the updated HTML file in the public folder as index.html
+
+Running the Application
+
+    Start the server
+
+    bash
+
+    npm start
+
+    For development with auto-restart:
+
+    bash
+
+    npm run dev
+
+    Open your browser
+        Go to http://localhost:3000
+
+API Endpoints
+Comments
+
+    GET /api/comments - Get all comments
+    POST /api/comments - Add a new comment
+    DELETE /api/comments/:id - Delete a comment (admin)
+
+Photos
+
+    POST /api/upload-photo - Upload groom photo
+    GET /api/groom-photo - Get current groom photo URL
+
+File Storage
+
+    Comments: Stored in data/comments.json
+    Photos: Stored in uploads/photos/
+    Settings: Stored in data/settings.json
+
+Configuration
+Environment Variables
+
+You can set these environment variables:
+
+bash
+
+PORT=3000  # Server port (default: 3000)
+
+Customization
+
+Party Details: Edit the HTML file to update:
+
+    Party date and time
+    Location details
+    Contact information
+    RSVP email
+
+Styling: Modify the CSS in the HTML file to match your theme.
+Features in Detail
+Photo Upload
+
+    Supports JPEG, PNG, GIF, and WebP formats
+    5MB file size limit
+    Automatic old photo cleanup
+    Real-time preview updates
+
+Comment System
+
+    Real-time comment posting
+    Persistent storage across sessions
+    Time-based display (e.g., "2 hours ago")
+    Input validation and error handling
+
+Security Features
+
+    File type validation
+    Size limits on uploads
+    HTML escaping for user inputs
+    CORS enabled for cross-origin requests
+
+Deployment
+Local Network Access
+
+To allow access from other devices on your network:
+
+bash
+
+node server.js
+
+Then access via your computer's IP address: http://YOUR_IP:3000
+Cloud Deployment
+
+The app is ready for deployment on platforms like:
+
+    Heroku
+    Railway
+    DigitalOcean
+    AWS EC2
+
+Make sure to:
+
+    Set the PORT environment variable
+    Ensure upload directories are created
+    Consider using cloud storage for production uploads
+
+Troubleshooting
+Common Issues
+
+    "Cannot find module" errors
+
+    bash
+
+    npm install
+
+    Port already in use
+
+    bash
+
+    export PORT=3001
+    npm start
+
+    Upload not working
+        Check file permissions on uploads/ directory
+        Verify file size is under 5MB
+        Check file format (JPEG, PNG, GIF, WebP only)
+    Comments not saving
+        Check write permissions on data/ directory
+        Verify server is running and accessible
+
+File Permissions
+
+On Unix systems, you may need to set permissions:
+
+bash
+
+chmod 755 uploads/
+chmod 755 data/
+
+Development
+Project Structure
+
+├── server.js          # Main server file
+├── package.json       # Dependencies and scripts
+├── public/
+│   └── index.html     # Frontend HTML file
+├── uploads/
+│   └── photos/        # Uploaded photos
+└── data/
+    ├── comments.json  # Comments storage
+    └── settings.json  # App settings
+
+Adding Features
+
+New API endpoints: Add them to server.js Frontend changes: Edit public/index.html Styling: Modify the CSS in the HTML file
+License
+
+MIT License - feel free to modify and use for your own events!
+Support
+
+For issues or questions, check the console logs and verify:
+
+    Server is running on the correct port
+    File permissions are correct
+    Network connectivity is working
+
+Have an amazing bachelor party! 🎉🥳
