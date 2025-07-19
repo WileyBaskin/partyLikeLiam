@@ -277,6 +277,185 @@
             opacity: 0.9;
         }
 
+        /* Groomsmen Section Styles */
+        .groomsmen-section {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            border-radius: 20px;
+            margin-bottom: 40px;
+            backdrop-filter: blur(10px);
+        }
+
+        .groomsmen-section h2 {
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            color: #4da6ff;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .groomsmen-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .groomsman-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(135, 206, 235, 0.3);
+            transition: all 0.3s ease;
+            animation: slideInUp 0.8s ease-out;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .groomsman-card:hover {
+            transform: translateY(-10px);
+            border-color: #87ceeb;
+            box-shadow: 0 20px 40px rgba(135, 206, 235, 0.3);
+        }
+
+        .groomsman-photo {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .groomsman-photo img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #87ceeb;
+            transition: transform 0.3s ease;
+            box-shadow: 0 5px 15px rgba(135, 206, 235, 0.3);
+        }
+
+        .groomsman-photo:hover img {
+            transform: scale(1.1);
+        }
+
+        .placeholder-photo {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: rgba(135, 206, 235, 0.2);
+            border: 3px dashed #87ceeb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #87ceeb;
+            font-size: 3em;
+            margin: 0 auto 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .placeholder-photo:hover {
+            background: rgba(135, 206, 235, 0.3);
+            transform: scale(1.05);
+        }
+
+        .groomsman-name {
+            font-size: 1.5em;
+            color: #87ceeb;
+            margin-bottom: 15px;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .groomsman-description {
+            font-size: 1em;
+            line-height: 1.5;
+            opacity: 0.9;
+            color: rgba(255, 255, 255, 0.9);
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .groomsman-upload {
+            margin-top: 15px;
+        }
+
+        .groomsman-upload input[type="file"] {
+            display: none;
+        }
+
+        .upload-label {
+            background: linear-gradient(45deg, #4da6ff, #87ceeb);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+            display: inline-block;
+            box-shadow: 0 3px 10px rgba(77, 166, 255, 0.3);
+        }
+
+        .upload-label:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(77, 166, 255, 0.5);
+        }
+
+        .editable-text {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid transparent;
+            border-radius: 8px;
+            padding: 10px;
+            color: white;
+            font-size: 1em;
+            width: 100%;
+            height: 100px;
+            text-align: center;
+            transition: border-color 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .editable-text:focus {
+            outline: none;
+            border-color: #87ceeb;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .editable-text::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .edit-mode .groomsman-name {
+            margin-bottom: 5px;
+        }
+
+        .name-input {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid transparent;
+            border-radius: 8px;
+            padding: 8px 12px;
+            color: #87ceeb;
+            font-size: 1.3em;
+            font-weight: bold;
+            width: 100%;
+            text-align: center;
+            margin-bottom: 15px;
+            transition: border-color 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .name-input:focus {
+            outline: none;
+            border-color: #87ceeb;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .name-input::placeholder {
+            color: rgba(135, 206, 235, 0.6);
+        }
+
         .comments-section {
             background: rgba(0, 0, 0, 0.3);
             padding: 40px;
@@ -396,6 +575,31 @@
                 width: 200px;
                 height: 200px;
             }
+
+            .groomsmen-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 2.5em;
+            }
+            
+            .party-info {
+                grid-template-columns: 1fr;
+            }
+            
+            .party-images {
+                grid-template-columns: 1fr;
+            }
+            
+            .countdown-timer {
+                gap: 10px;
+            }
+            
+            .time-unit {
+                min-width: 60px;
+                padding: 15px;
+            }
         }
 
         @keyframes fadeInUp {
@@ -435,34 +639,11 @@
             0% { transform: scale(1); }
             100% { transform: scale(1.05); }
         }
-
-        @media (max-width: 768px) {
-            .header h1 {
-                font-size: 2.5em;
-            }
-            
-            .party-info {
-                grid-template-columns: 1fr;
-            }
-            
-            .party-images {
-                grid-template-columns: 1fr;
-            }
-            
-            .countdown-timer {
-                gap: 10px;
-            }
-            
-            .time-unit {
-                min-width: 60px;
-                padding: 15px;
-            }
-        }
     </style>
 </head>
 <body>
     <div class="container">
-                <div class="header">
+        <div class="header">
             <h1>🎉 LIAM'S BACHELOR PARTY 🎉</h1>
             <p>Come Party and Make a Lifelong Friend!</p>
         </div>
@@ -483,24 +664,35 @@
             </div>
 
             <div class="info-card">
-                <h3>🎊 What to Expect</h3>
+                <h3>🎊 What you can expect to find</h3>
                 <p>• Fun<br>
                 • Dancing<br>
                 • Drinks<br>
-                • Acelebration for an amazing person<br>
-                • Astronauts? Maybe<br></p>
+                • A celebration for an amazing person soon to be off the market<br>
+                • True love? Maybe<br></p>
             </div>
+        </div>
+
         <div class="groom-section">
             <h2>🤵 Meet the Groom!</h2>
             <div class="groom-content">
                 <div class="groom-photo">
-                    <img src="uploads/photos/anguish.jpg" alt="Liam - The Groom" id="groomImage">
+                    <img src="uploads/photos/liam_piper.jpeg" alt="Liam - The Groom" id="groomImage">
                 </div>
                 <div class="groom-info">
                     <h3>Liam's Big Day Approaches!</h3>
-                    <p>Cool guy, info to add</p>
-                    <p>placeholder! 🎉</p>
+                    <p>He is a wonderful person and is soon to marry the love of his life! Come celebrate the milestone!</p>
+                    <p>Some of his best qualities: He is very considerate of others. When he hosts any kind of event and sees someone that looks like they feel out of place, he will make a special effort to include them! He is an amazing planner. He always ah an A, B, and C plan for any trip or event. He's a good looking guy, just look at this adorable photo of him and his puppy.</p>
+                    <p>He loves wild parties, so join us for his big send off! 🎉</p>
                 </div>
+            </div>
+        </div>
+
+        <!-- New Groomsmen Section -->
+        <div class="groomsmen-section">
+            <h2>🕺 Meet the Groomsmen!</h2>
+            <div class="groomsmen-grid" id="groomsmenGrid">
+                <!-- Groomsmen cards will be generated by JavaScript -->
             </div>
         </div>
 
@@ -526,10 +718,140 @@
             </div>
         </div>
 
-    
-
+        <div class="comments-section">
+            <h2>💬 Leave a Message for Liam! Or, make a Suggestion for the Party!</h2>
+            <div class="comment-form">
+                <input type="text" id="nameInput" placeholder="Your name" class="comment-input">
+                <textarea id="messageInput" placeholder="Share a memory, give advice, or just say congrats!" class="comment-textarea"></textarea>
+                <button onclick="addComment()" class="comment-btn">Post Message 📝</button>
+            </div>
+            <div class="comments-list" id="commentsList">
+            </div>
+        </div>
+    </div>
 
     <script>
+        // Groomsmen data storage
+        let groomsmen = [
+            {
+                id: 1,
+                name: 'Wiley',
+                description: 'Best man and twin brother. Made the website, so make sure you say nice things about it.',
+                photo: "uploads/photos/wiley.jpeg"
+            },
+            {
+                id: 2,
+                name: 'Ben',
+                description: "Boyfriend of Liam's sister. An entrepreneurial God, super smart.",
+                photo: "uploads/photos/ben.jpeg"
+            },
+            {
+                id: 3,
+                name: 'Ronen',
+                description: 'Long time college buddy, hard core partier.',
+                photo: "uploads/photos/ronen.JPG"
+            },
+            {
+                id: 4,
+                name: 'Cole',
+                description: 'Wedding officiant (so you know he is trustworthy), throws amazing themed parties',
+                photo: "uploads/photos/cole.PNG"
+            },
+            {
+                id: 5,
+                name: 'Eugene',
+                description: 'Get input from Liam',
+                photo: "uploads/photos/eugene.JPG"
+            },
+            {
+                id: 6,
+                name: 'Denver',
+                description: 'One of the Main planners for this amazing party, so say something nice about it. An incorrigible partier himself.',
+                photo: "uploads/photos/denver.png"
+            },
+            {
+                id: 7,
+                name: 'Michael',
+                description: "Liam's carbon copy, they are shockingly alike in so many ways. Seems more like a twin than his twin.",
+                photo: "uploads/photos/michael.jpeg"
+            },
+            {
+                id: 8,
+                name: 'Cooper',
+                description: 'Get Liam input',
+                photo: "uploads/photos/anguish.jpg"
+            },
+            {
+                id: 9,
+                name: 'Ray',
+                description: "Husband of Laim's sister. The new family doctor and a friend to all",
+                photo: "uploads/photos/ray.jpeg" // Replace with image path like: 'path/to/photo.jpg'
+            },
+            {
+                id: 10,
+                name: 'Dan',
+                description: 'Sports fanatic and grill master for the crew.',
+                photo: "uploads/photos/anguish.jpg"
+            }
+        ];
+
+        // Initialize groomsmen cards
+        function initializeGroomsmen() {
+            const grid = document.getElementById('groomsmenGrid');
+            grid.innerHTML = '';
+
+            groomsmen.forEach((groomsman, index) => {
+                const card = document.createElement('div');
+                card.className = 'groomsman-card';
+                card.innerHTML = `
+                    <div class="groomsman-photo">
+                        ${groomsman.photo ? 
+                            `<img src="${groomsman.photo}" alt="Groomsman ${groomsman.id}">` :
+                            `<div class="placeholder-photo" onclick="triggerFileInput(${index})">📷</div>`
+                        }
+                    </div>
+                    <input type="text" 
+                           class="name-input" 
+                           placeholder="Groomsman Name" 
+                           value="${groomsman.name}"
+                           onchange="updateGroomsmanName(${index}, this.value)">
+                    <textarea class="editable-text" 
+                              placeholder="Add a description about this groomsman..."
+                              onchange="updateGroomsmanDescription(${index}, this.value)">${groomsman.description}</textarea>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Trigger file input
+        function triggerFileInput(index) {
+            document.getElementById(`file${index}`).click();
+        }
+
+        // Handle photo upload
+        function handlePhotoUpload(index, input) {
+            const file = input.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    groomsmen[index].photo = e.target.result;
+                    initializeGroomsmen(); // Refresh the display
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Update groomsman name
+        function updateGroomsmanName(index, name) {
+            groomsmen[index].name = name;
+        }
+
+        // Update groomsman description
+        function updateGroomsmanDescription(index, description) {
+            groomsmen[index].description = description;
+        }
+
         // Countdown timer
         function updateCountdown() {
             const partyDate = new Date('July 26, 2025 20:00:00').getTime();
@@ -551,22 +873,6 @@
             }
         }
 
-        // Update countdown every second
-        setInterval(updateCountdown, 1000);
-        updateCountdown();
-
-        // Photo upload functionality
-        document.getElementById('photoInput').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('groomImage').src = e.target.result;
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-
         // Comment system
         let comments = [];
 
@@ -585,7 +891,7 @@
                 time: new Date().toLocaleString()
             };
 
-            await addCommentHelper(comment)
+            await addCommentHelper(comment);
             await displayComments();
             
             // Clear the form
@@ -603,7 +909,6 @@
                     body: JSON.stringify({ comment })
                 });
 
-                //console.log(response)
                 const data = await response.json();
 
                 if (response.ok) {
@@ -619,14 +924,10 @@
 
         async function displayComments() {
             const allComments = await getComments();
-            console.log(allComments)
-            readableComments = await allComments.json()
-            console.log(readableComments)
-            
+            const readableComments = await allComments.json();
             
             let commentsHTML = '';
             readableComments.forEach(comment => {
-                console.log(comment)
                 commentsHTML += `
                     <div class="comment">
                         <div class="comment-header">
@@ -638,7 +939,7 @@
                 `;
             });
             
-            commentsList.innerHTML = commentsHTML;
+            document.getElementById('commentsList').innerHTML = commentsHTML;
         }
 
         async function getComments(){
@@ -648,9 +949,8 @@
                     headers: {
                         'Content-Type': 'application/json'
                     }
-                })
-                return response
-                ;
+                });
+                return response;
             } catch (err) {
                 alert('Failed to get comments.');
                 console.error(err);
@@ -680,24 +980,16 @@
                 this.style.transform = 'translateY(0) scale(1)';
             });
         });
+
+        // Initialize everything when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeGroomsmen();
+            displayComments();
+            updateCountdown();
+        });
+
+        // Update countdown every second
     </script>
 
-<div class="comments-section">
-    <h2>💬 Leave a Message for Liam! Or, make a Suggestion for the Party!</h2>
-    <div class="comment-form">
-        <input type="text" id="nameInput" placeholder="Your name" class="comment-input">
-        <textarea id="messageInput" placeholder="Share a memory, give advice, or just say congrats!" class="comment-textarea"></textarea>
-        <button onclick="addComment()" class="comment-btn">Post Message 📝</button>
-    </div>
-    <div class="comments-list" id="commentsList">
-       <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        displayComments(); // Call your function
-    });
-        </script>
-    </div>
-</div>
-
-</div>
 </body>
 </html>
