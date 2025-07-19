@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PartyLikeLiam</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            padding: 60px 0;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            margin-bottom: 40px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .header h1 {
+            font-size: 4em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            background: linear-gradient(45deg, #f9e937, #ffa406);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: pulse 2s ease-in-out infinite alternate;
+        }
+
+        .header p {
+            font-size: 1.5em;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .party-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .info-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: slideInUp 0.8s ease-out;
+        }
+
+        .info-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .info-card h3 {
+            font-size: 2em;
+            margin-bottom: 20px;
+            color: #87ceeb;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .info-card p {
+            font-size: 1.2em;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+
+        .party-images {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .image-card {
+            position: relative;
+            height: 300px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
+            animation: zoomIn 0.8s ease-out;
+        }
+
+        .image-card:hover {
+            transform: scale(1.05);
+        }
+
+        .image-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.8);
+            transition: filter 0.3s ease;
+        }
+
+        .image-card:hover img {
+            filter: brightness(1);
+        }
+
+        .image-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+            padding: 20px;
+            color: white;
+            text-align: center;
+        }
+
+        .countdown {
+            text-align: center;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 40px;
+            border-radius: 20px;
+            margin-bottom: 40px;
+            backdrop-filter: blur(10px);
+        }
+
+        .countdown h2 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            color: #4da6ff;
+        }
+
+        .countdown-timer {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .time-unit {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            min-width: 80px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .time-unit .number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #87ceeb;
+        }
+
+        .time-unit .label {
+            font-size: 0.9em;
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+
+        .cta-section {
+            text-align: center;
+            padding: 40px;
+            background: rgba(77, 166, 255, 0.2);
+            border-radius: 20px;
+            border: 2px solid #4da6ff;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(45deg, #4da6ff, #87ceeb);
+            color: white;
+            padding: 20px 40px;
+            font-size: 1.3em;
+            text-decoration: none;
+            border-radius: 50px;
+            box-shadow: 0 10px 20px rgba(77, 166, 255, 0.4);
+            transition: all 0.3s ease;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(77, 166, 255, 0.6);
+        }
+
+        .groom-section {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            border-radius: 20px;
+            margin-bottom: 40px;
+            backdrop-filter: blur(10px);
+            text-align: center;
+        }
+
+        .groom-section h2 {
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            color: #4da6ff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .groom-content {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 40px;
+            align-items: center;
+            text-align: left;
+        }
+
+        .groom-photo {
+            text-align: center;
+        }
+
+        .groom-photo img {
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid #4da6ff;
+            box-shadow: 0 10px 30px rgba(77, 166, 255, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .groom-photo img:hover {
+            transform: scale(1.05);
+        }
+
+        .photo-upload {
+            margin-top: 20px;
+        }
+
+        .upload-btn {
+            background: linear-gradient(45deg, #4da6ff, #87ceeb);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(77, 166, 255, 0.3);
+        }
+
+        .upload-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(77, 166, 255, 0.5);
+        }
+
+        .groom-info h3 {
+            font-size: 2em;
+            color: #87ceeb;
+            margin-bottom: 20px;
+        }
+
+        .groom-info p {
+            font-size: 1.2em;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            opacity: 0.9;
+        }
+
+        /* Groomsmen Section Styles */
+        .groomsmen-section {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            border-radius: 20px;
+            margin-bottom: 40px;
+            backdrop-filter: blur(10px);
+        }
+
+        .groomsmen-section h2 {
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            color: #4da6ff;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .groomsmen-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .groomsman-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(135, 206, 235, 0.3);
+            transition: all 0.3s ease;
+            animation: slideInUp 0.8s ease-out;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .groomsman-card:hover {
+            transform: translateY(-10px);
+            border-color: #87ceeb;
+            box-shadow: 0 20px 40px rgba(135, 206, 235, 0.3);
+        }
+
+        .groomsman-photo {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .groomsman-photo img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #87ceeb;
+            transition: transform 0.3s ease;
+            box-shadow: 0 5px 15px rgba(135, 206, 235, 0.3);
+        }
+
+        .groomsman-photo:hover img {
+            transform: scale(1.1);
+        }
+
+        .placeholder-photo {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: rgba(135, 206, 235, 0.2);
+            border: 3px dashed #87ceeb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #87ceeb;
+            font-size: 3em;
+            margin: 0 auto 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .placeholder-photo:hover {
+            background: rgba(135, 206, 235, 0.3);
+            transform: scale(1.05);
+        }
+
+        .groomsman-name {
+            font-size: 1.5em;
+            color: #87ceeb;
+            margin-bottom: 15px;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .groomsman-description {
+            font-size: 1em;
+            line-height: 1.5;
+            opacity: 0.9;
+            color: rgba(255, 255, 255, 0.9);
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .groomsman-upload {
+            margin-top: 15px;
+        }
+
+        .groomsman-upload input[type="file"] {
+            display: none;
+        }
+
+        .upload-label {
+            background: linear-gradient(45deg, #4da6ff, #87ceeb);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+            display: inline-block;
+            box-shadow: 0 3px 10px rgba(77, 166, 255, 0.3);
+        }
+
+        .upload-label:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(77, 166, 255, 0.5);
+        }
+
+        .editable-text {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid transparent;
+            border-radius: 8px;
+            padding: 10px;
+            color: white;
+            font-size: 1em;
+            width: 100%;
+            height: 100px;
+            text-align: center;
+            transition: border-color 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .editable-text:focus {
+            outline: none;
+            border-color: #87ceeb;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .editable-text::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .edit-mode .groomsman-name {
+            margin-bottom: 5px;
+        }
+
+        .name-input {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid transparent;
+            border-radius: 8px;
+            padding: 8px 12px;
+            color: #87ceeb;
+            font-size: 1.3em;
+            font-weight: bold;
+            width: 100%;
+            text-align: center;
+            margin-bottom: 15px;
+            transition: border-color 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .name-input:focus {
+            outline: none;
+            border-color: #87ceeb;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .name-input::placeholder {
+            color: rgba(135, 206, 235, 0.6);
+        }
+
+        .comments-section {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            border-radius: 20px;
+            margin-bottom: 40px;
+            backdrop-filter: blur(10px);
+        }
+
+        .comments-section h2 {
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            color: #4da6ff;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .comment-form {
+            margin-bottom: 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .comment-input {
+            padding: 15px;
+            border: 2px solid #4da6ff;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1.1em;
+            backdrop-filter: blur(5px);
+        }
+
+        .comment-input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .comment-textarea {
+            padding: 15px;
+            border: 2px solid #4da6ff;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1.1em;
+            min-height: 100px;
+            resize: vertical;
+            backdrop-filter: blur(5px);
+            font-family: inherit;
+        }
+
+        .comment-textarea::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .comment-btn {
+            background: linear-gradient(45deg, #4da6ff, #87ceeb);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(77, 166, 255, 0.3);
+            align-self: flex-start;
+        }
+
+        .comment-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(77, 166, 255, 0.5);
+        }
+
+        .comments-list {
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .sample-comment, .comment {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            border-left: 4px solid #87ceeb;
+            backdrop-filter: blur(5px);
+            animation: slideInUp 0.5s ease-out;
+        }
+
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .comment-header strong {
+            color: #87ceeb;
+            font-size: 1.1em;
+        }
+
+        .comment-time {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9em;
+        }
+
+        .comment-text {
+            line-height: 1.5;
+            opacity: 0.9;
+        }
+
+        @media (max-width: 768px) {
+            .groom-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            
+            .groom-photo img {
+                width: 200px;
+                height: 200px;
+            }
+
+            .groomsmen-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 2.5em;
+            }
+            
+            .party-info {
+                grid-template-columns: 1fr;
+            }
+            
+            .party-images {
+                grid-template-columns: 1fr;
+            }
+            
+            .countdown-timer {
+                gap: 10px;
+            }
+            
+            .time-unit {
+                min-width: 60px;
+                padding: 15px;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes zoomIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.05); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎉 LIAM'S BACHELOR PARTY 🎉</h1>
+            <p>Come Party and Make a Lifelong Friend!</p>
+        </div>
+
+        <div class="party-info">
+            <div class="info-card">
+                <h3>📍 Location</h3>
+                <p><strong>The Party Venue</strong><br>
+                2199 Valley Road Osage Beach, MO 65065<br><br>
+                </p>
+            </div>
+
+            <div class="info-card">
+                <h3>📅 Date & Time</h3>
+                <p><strong>Saturday, July 26th, 2025</strong><br>
+                8:00 PM - 2:00 AM<br><br>
+                </p>
+            </div>
+
+            <div class="info-card">
+                <h3>🎊 What you can expect to find</h3>
+                <p>• Fun<br>
+                • Dancing<br>
+                • Drinks<br>
+                • A celebration for an amazing person soon to be off the market<br>
+                • True love? Maybe<br></p>
+            </div>
+        </div>
+
+        <div class="groom-section">
+            <h2>🤵 Meet the Groom!</h2>
+            <div class="groom-content">
+                <div class="groom-photo">
+                    <img src="uploads/photos/liam_piper.jpeg" alt="Liam - The Groom" id="groomImage">
+                </div>
+                <div class="groom-info">
+                    <h3>Liam's Big Day Approaches!</h3>
+                    <p>He is a wonderful person and is soon to marry the love of his life! Come celebrate the milestone!</p>
+                    <p>Some of his best qualities: He is very considerate of others. When he hosts any kind of event and sees someone that looks like they feel out of place, he will make a special effort to include them! He is an amazing planner. He always ah an A, B, and C plan for any trip or event. He's a good looking guy, just look at this adorable photo of him and his puppy.</p>
+                    <p>He loves wild parties, so join us for his big send off! 🎉</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- New Groomsmen Section -->
+        <div class="groomsmen-section">
+            <h2>🕺 Meet the Groomsmen!</h2>
+            <div class="groomsmen-grid" id="groomsmenGrid">
+                <!-- Groomsmen cards will be generated by JavaScript -->
+            </div>
+        </div>
+
+        <div class="countdown">
+            <h2>⏰ Countdown to the Party!</h2>
+            <div class="countdown-timer" id="countdown">
+                <div class="time-unit">
+                    <div class="number" id="days">--</div>
+                    <div class="label">Days</div>
+                </div>
+                <div class="time-unit">
+                    <div class="number" id="hours">--</div>
+                    <div class="label">Hours</div>
+                </div>
+                <div class="time-unit">
+                    <div class="number" id="minutes">--</div>
+                    <div class="label">Minutes</div>
+                </div>
+                <div class="time-unit">
+                    <div class="number" id="seconds">--</div>
+                    <div class="label">Seconds</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="comments-section">
+            <h2>💬 Leave a Message for Liam! Or, make a Suggestion for the Party!</h2>
+            <div class="comment-form">
+                <input type="text" id="nameInput" placeholder="Your name" class="comment-input">
+                <textarea id="messageInput" placeholder="Share a memory, give advice, or just say congrats!" class="comment-textarea"></textarea>
+                <button onclick="addComment()" class="comment-btn">Post Message 📝</button>
+            </div>
+            <div class="comments-list" id="commentsList">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Groomsmen data storage
+        let groomsmen = [
+            {
+                id: 1,
+                name: 'Wiley',
+                description: 'Best man and twin brother. Made the website, so make sure you say nice things about it.',
+                photo: "uploads/photos/wiley.jpeg"
+            },
+            {
+                id: 2,
+                name: 'Ben',
+                description: "Boyfriend of Liam's sister. An entrepreneurial God, super smart.",
+                photo: "uploads/photos/ben.jpeg"
+            },
+            {
+                id: 3,
+                name: 'Ronen',
+                description: 'Long time college buddy, hard core partier.',
+                photo: "uploads/photos/ronen.JPG"
+            },
+            {
+                id: 4,
+                name: 'Cole',
+                description: 'Wedding officiant (so you know he is trustworthy), throws amazing themed parties',
+                photo: "uploads/photos/cole.PNG"
+            },
+            {
+                id: 5,
+                name: 'Eugene',
+                description: 'Get input from Liam',
+                photo: "uploads/photos/eugene.JPG"
+            },
+            {
+                id: 6,
+                name: 'Denver',
+                description: 'One of the Main planners for this amazing party, so say something nice about it. An incorrigible partier himself.',
+                photo: "uploads/photos/denver.png"
+            },
+            {
+                id: 7,
+                name: 'Michael',
+                description: "Liam's carbon copy, they are shockingly alike in so many ways. Seems more like a twin than his twin.",
+                photo: "uploads/photos/michael.jpeg"
+            },
+            {
+                id: 8,
+                name: 'Cooper',
+                description: 'Get Liam input',
+                photo: "uploads/photos/anguish.jpg"
+            },
+            {
+                id: 9,
+                name: 'Ray',
+                description: "Husband of Laim's sister. The new family doctor and a friend to all",
+                photo: "uploads/photos/ray.jpeg" // Replace with image path like: 'path/to/photo.jpg'
+            },
+            {
+                id: 10,
+                name: 'Dan',
+                description: 'Sports fanatic and grill master for the crew.',
+                photo: "uploads/photos/anguish.jpg"
+            }
+        ];
+
+        // Initialize groomsmen cards
+        function initializeGroomsmen() {
+            const grid = document.getElementById('groomsmenGrid');
+            grid.innerHTML = '';
+
+            groomsmen.forEach((groomsman, index) => {
+                const card = document.createElement('div');
+                card.className = 'groomsman-card';
+                card.innerHTML = `
+                    <div class="groomsman-photo">
+                        ${groomsman.photo ? 
+                            `<img src="${groomsman.photo}" alt="Groomsman ${groomsman.id}">` :
+                            `<div class="placeholder-photo" onclick="triggerFileInput(${index})">📷</div>`
+                        }
+                    </div>
+                    <input type="text" 
+                           class="name-input" 
+                           placeholder="Groomsman Name" 
+                           value="${groomsman.name}"
+                           onchange="updateGroomsmanName(${index}, this.value)">
+                    <textarea class="editable-text" 
+                              placeholder="Add a description about this groomsman..."
+                              onchange="updateGroomsmanDescription(${index}, this.value)">${groomsman.description}</textarea>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Trigger file input
+        function triggerFileInput(index) {
+            document.getElementById(`file${index}`).click();
+        }
+
+        // Handle photo upload
+        function handlePhotoUpload(index, input) {
+            const file = input.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    groomsmen[index].photo = e.target.result;
+                    initializeGroomsmen(); // Refresh the display
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Update groomsman name
+        function updateGroomsmanName(index, name) {
+            groomsmen[index].name = name;
+        }
+
+        // Update groomsman description
+        function updateGroomsmanDescription(index, description) {
+            groomsmen[index].description = description;
+        }
+
+        // Countdown timer
+        function updateCountdown() {
+            const partyDate = new Date('July 26, 2025 20:00:00').getTime();
+            const now = new Date().getTime();
+            const distance = partyDate - now;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById('days').textContent = days;
+            document.getElementById('hours').textContent = hours;
+            document.getElementById('minutes').textContent = minutes;
+            document.getElementById('seconds').textContent = seconds;
+
+            if (distance < 0) {
+                document.getElementById('countdown').innerHTML = '<h2>🎉 THE PARTY IS NOW! 🎉</h2>';
+            }
+        }
+
+        // Comment system
+        let comments = [];
+
+        async function addComment() {
+            const name = document.getElementById('nameInput').value.trim();
+            const message = document.getElementById('messageInput').value.trim();
+            
+            if (!name || !message) {
+                alert('Please fill in both your name and message!');
+                return;
+            }
+
+            const comment = {
+                name: name,
+                message: message,
+                time: new Date().toLocaleString()
+            };
+
+            await addCommentHelper(comment);
+            await displayComments();
+            
+            // Clear the form
+            document.getElementById('nameInput').value = '';
+            document.getElementById('messageInput').value = '';
+        }
+
+        async function addCommentHelper(comment) {
+            try {
+                const response = await fetch('/api/comments', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ comment })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    return;
+                } else {
+                    alert('Error: ' + data.error);
+                }
+            } catch (err) {
+                alert('Failed to send comment.');
+                console.error(err);
+            }
+        }
+
+        async function displayComments() {
+            const allComments = await getComments();
+            const readableComments = await allComments.json();
+            
+            let commentsHTML = '';
+            readableComments.forEach(comment => {
+                commentsHTML += `
+                    <div class="comment">
+                        <div class="comment-header">
+                            <strong>${escapeHtml(comment.name)}</strong>
+                            <span class="comment-time">${comment.time}</span>
+                        </div>
+                        <div class="comment-text">${escapeHtml(comment.message)}</div>
+                    </div>
+                `;
+            });
+            
+            document.getElementById('commentsList').innerHTML = commentsHTML;
+        }
+
+        async function getComments(){
+            try {
+                const response = await fetch('/api/comments', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                return response;
+            } catch (err) {
+                alert('Failed to get comments.');
+                console.error(err);
+            }
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Allow Enter key to submit comments
+        document.getElementById('messageInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && e.ctrlKey) {
+                addComment();
+            }
+        });
+
+        // Add some interactive hover effects
+        document.querySelectorAll('.info-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        // Initialize everything when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeGroomsmen();
+            displayComments();
+            updateCountdown();
+        });
+
+        // Update countdown every second
+    </script>
+
+</body>
+</html>
