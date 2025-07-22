@@ -351,6 +351,66 @@
             transform: scale(1.1);
         }
 
+        .guest-section {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            border-radius: 20px;
+            margin-bottom: 40px;
+            backdrop-filter: blur(10px);
+        }
+
+        .guest-section h2 {
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            color: #4da6ff;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .guest-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .guest-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(135, 206, 235, 0.3);
+            transition: all 0.3s ease;
+            animation: slideInUp 0.8s ease-out;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .guest-card:hover {
+            transform: translateY(-10px);
+            border-color: #87ceeb;
+            box-shadow: 0 20px 40px rgba(135, 206, 235, 0.3);
+        }
+
+        .guest-photo {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .guest-photo img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #87ceeb;
+            transition: transform 0.3s ease;
+            box-shadow: 0 5px 15px rgba(135, 206, 235, 0.3);
+        }
+
+        .guest-photo:hover img {
+            transform: scale(1.1);
+        }
+
         .placeholder-photo {
             width: 150px;
             height: 150px;
@@ -398,6 +458,33 @@
         .groomsman-upload input[type="file"] {
             display: none;
         }
+
+        .guest-name {
+            font-size: 1.5em;
+            color: #87ceeb;
+            margin-bottom: 15px;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .guest-description {
+            font-size: 1em;
+            line-height: 1.5;
+            opacity: 0.9;
+            color: rgba(255, 255, 255, 0.9);
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .guest-upload {
+            margin-top: 15px;
+        }
+
+        .guest-upload input[type="file"] {
+            display: none;
+        }        
 
         .upload-label {
             background: linear-gradient(45deg, #4da6ff, #87ceeb);
@@ -737,6 +824,12 @@
             </div>
         </div>
 
+        <div class="guest-section">
+            <h2>💃 Some Guests You Might Meet! If You're Coming, Add Yourself!</h2>
+            <div class="guest-grid" id="guestGrid">
+            </div>
+        </div>
+
         <div class="countdown">
             <h2>⏰ Countdown to the Party!</h2>
             <div class="countdown-timer" id="countdown">
@@ -836,6 +929,13 @@
             }
         ];
 
+        let guests = Array.from({ length: 1 }, (_, i) => ({
+            id: i + 1,
+            name: '',
+            description: '',
+            photo: null
+        }));
+
         // Initialize groomsmen cards
         function initializeGroomsmen() {
             const grid = document.getElementById('groomsmenGrid');
@@ -859,6 +959,38 @@
                     <textarea class="editable-text" 
                               placeholder="Add a description about this groomsman..."
                               onchange="updateGroomsmanDescription(${index}, this.value)">${groomsman.description}</textarea>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function initializeGuest() {
+            const grid = document.getElementById('guestGrid');
+            grid.innerHTML = '';
+
+            guests.forEach((guest, index) => {
+                const card = document.createElement('div');
+                card.className = 'guest-card';
+                card.innerHTML = `
+                    <div class="guest-photo">
+                        ${guest.photo ? 
+                            `<img src="${guest.photo}" alt="Guest ${guest.id}">` :
+                            `<div class="placeholder-photo" onclick="triggerFileInput(${index})">📷</div>`
+                        }
+                    </div>
+                    <input type="text" 
+                           class="name-input" 
+                           placeholder="Guest Name" 
+                           value="${guest.name}"
+                           onchange="updateGuestName(${index}, this.value)">
+                    <textarea class="editable-text" 
+                              placeholder="Add a description about this guest..."
+                              onchange="updateGuestDescription(${index}, this.value)">${guest.description}</textarea>
+                    <div class="guest-upload">
+                        <input type="file" id="file${index}" accept="image/*" onchange="handlePhotoUpload(${index}, this)">
+                        <label for="file${index}" class="upload-label">
+                            ${guest.photo ? 'Change Photo' : 'Add Photo'} 📸
+                        </label>
                     </div>
                 `;
                 grid.appendChild(card);
@@ -876,21 +1008,21 @@
             if (file) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    groomsmen[index].photo = e.target.result;
-                    initializeGroomsmen(); // Refresh the display
+                    guests[index].photo = e.target.result;
+                    initializeGuest(); // Refresh the display
                 };
                 reader.readAsDataURL(file);
             }
         }
 
         // Update groomsman name
-        function updateGroomsmanName(index, name) {
-            groomsmen[index].name = name;
+        function updateGuestName(index, name) {
+            guests[index].name = name;
         }
 
         // Update groomsman description
-        function updateGroomsmanDescription(index, description) {
-            groomsmen[index].description = description;
+        function updateGuestDescription(index, description) {
+            guests[index].description = description;
         }
 
         // Countdown timer
@@ -1025,6 +1157,7 @@
         // Initialize everything when page loads
         document.addEventListener('DOMContentLoaded', function() {
             initializeGroomsmen();
+            initializeGuest();
             displayComments();
             updateCountdown();
         });
