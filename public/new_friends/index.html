@@ -53,7 +53,20 @@
             opacity: 0.9;
         }
 
+        .header l {
+            font-size: 1.0em;
+            margin-bottom: 20px;
+            opacity: 0.8;
+        }
+
         .party-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .sponser {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 30px;
@@ -565,6 +578,30 @@
             opacity: 0.9;
         }
 
+        .sponsor-with-logo {
+            text-align: center;
+            padding: 60px 0;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            margin-bottom: 40px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .sponsor-with-logo img {
+            width: 240px;
+            height: 240px;
+            border-radius: 2px;
+            vertical-align: middle;
+        }
+
+        .sponsor-with-logo p {
+            font-size: 1.5em;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
         @media (max-width: 768px) {
             .groom-content {
                 grid-template-columns: 1fr;
@@ -585,6 +622,10 @@
             }
             
             .party-info {
+                grid-template-columns: 1fr;
+            }
+
+            .sponser {
                 grid-template-columns: 1fr;
             }
             
@@ -648,7 +689,13 @@
             <p>Come Party and Make a Lifelong Friend!</p>
         </div>
 
-        <div class="party-info">
+        <!-- <div class="sponser">
+            <div class="sponsor-with-logo">
+                <p>Sponsored by 107.9 The Coyote</p>
+                <img src="uploads/photos/sponser.png" alt="107.9 The Coyote Logo">
+            </div>
+        </div> -->
+
             <div class="info-card">
                 <h3>📅 Date & Time</h3>
                 <p><strong>Saturday, July 26th, 2025</strong><br>
@@ -670,7 +717,7 @@
             <h2>🤵 Meet the Groom!</h2>
             <div class="groom-content">
                 <div class="groom-photo">
-                    <img src="/uploads/photos/liam_piper.jpeg" alt="Liam - The Groom" id="groomImage">
+                    <img src="uploads/photos/liam_piper.jpeg" alt="Liam - The Groom" id="groomImage">
                 </div>
                 <div class="groom-info">
                     <h3>Liam's Big Day Approaches!</h3>
@@ -712,10 +759,10 @@
         </div>
 
         <div class="comments-section">
-            <h2>💬 Leave a Message for Liam! Or, make a Suggestion for the Party!</h2>
+            <h2>💬 Leave a dare for Liam to do! He will preform the top 5 listed dares on Saturday</h2>
             <div class="comment-form">
                 <input type="text" id="nameInput" placeholder="Your name" class="comment-input">
-                <textarea id="messageInput" placeholder="Share a memory, give advice, or just say congrats!" class="comment-textarea"></textarea>
+                <textarea id="messageInput" placeholder="Make the dare wild" class="comment-textarea"></textarea>
                 <button onclick="addComment()" class="comment-btn">Post Message 📝</button>
             </div>
             <div class="comments-list" id="commentsList">
@@ -730,61 +777,61 @@
                 id: 1,
                 name: 'Wiley',
                 description: 'Best man and twin brother. Made the website, so make sure you say nice things about it.',
-                photo: "/uploads/photos/wiley.jpeg"
+                photo: "uploads/photos/wiley.jpeg"
             },
             {
                 id: 2,
                 name: 'Ben',
                 description: "Boyfriend of Liam's sister. An entrepreneurial God, super smart.",
-                photo: "/uploads/photos/ben.jpeg"
+                photo: "uploads/photos/ben.jpeg"
             },
             {
                 id: 3,
                 name: 'Ronen',
                 description: 'Long time college buddy of Liam and a hard core partier to the core.',
-                photo: "/uploads/photos/ronen.JPG"
+                photo: "uploads/photos/ronen.JPG"
             },
             {
                 id: 4,
                 name: 'Cole',
                 description: 'Wedding officiant (so you know he is trustworthy), throws amazing themed parties',
-                photo: "/uploads/photos/cole.PNG"
+                photo: "uploads/photos/cole.PNG"
             },
             {
                 id: 5,
                 name: 'Eugene',
                 description: 'College Business Buddy™️. He threw nasty ragers with Liam through college',
-                photo: "/uploads/photos/eugene.JPG"
+                photo: "uploads/photos/eugene.JPG"
             },
             {
                 id: 6,
                 name: 'Denver',
                 description: 'One of the Main planners for this amazing party, so say something nice about it. An incorrigible partier himself.',
-                photo: "/uploads/photos/denver.png"
+                photo: "uploads/photos/denver.png"
             },
             {
                 id: 7,
                 name: 'Michael',
                 description: "Liam's carbon copy, they are shockingly alike in so many ways. Seems more like a twin than his twin.",
-                photo: "/uploads/photos/michael.jpeg"
+                photo: "uploads/photos/michael.jpeg"
             },
             {
                 id: 8,
                 name: 'Cooper',
                 description: 'College roommate and a friendly, inviting person who loves F1',
-                photo: "/uploads/photos/anguish.jpg"
+                photo: "uploads/photos/cooper.jpeg"
             },
             {
                 id: 9,
                 name: 'Ray',
-                description: "Husband of Laim's sister. The new family doctor and a friend to all",
-                photo: "/uploads/photos/ray.jpeg" // Replace with image path like: 'path/to/photo.jpg'
+                description: "Husband of Liam's sister. The new family doctor and a friend to all",
+                photo: "uploads/photos/ray.jpeg" // Replace with image path like: 'path/to/photo.jpg'
             },
             {
                 id: 10,
                 name: 'Dan',
                 description: "Work buddy at Liam's first real job. They love playing guitar together",
-                photo: "/uploads/photos/anguish.jpg"
+                photo: "uploads/photos/dan.jpeg"
             }
         ];
 
@@ -874,7 +921,7 @@
             const message = document.getElementById('messageInput').value.trim();
             
             if (!name || !message) {
-                alert('Please fill in both your name and message!');
+                alert('Please fill in both your name and dare!');
                 return;
             }
 
