@@ -53,7 +53,20 @@
             opacity: 0.9;
         }
 
+        .header l {
+            font-size: 1.0em;
+            margin-bottom: 20px;
+            opacity: 0.8;
+        }
+
         .party-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .sponser {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 30px;
@@ -565,6 +578,30 @@
             opacity: 0.9;
         }
 
+        .sponsor-with-logo {
+            text-align: center;
+            padding: 60px 0;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            margin-bottom: 40px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .sponsor-with-logo img {
+            width: 240px;
+            height: 240px;
+            border-radius: 2px;
+            vertical-align: middle;
+        }
+
+        .sponsor-with-logo p {
+            font-size: 1.5em;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
         @media (max-width: 768px) {
             .groom-content {
                 grid-template-columns: 1fr;
@@ -585,6 +622,10 @@
             }
             
             .party-info {
+                grid-template-columns: 1fr;
+            }
+
+            .sponser {
                 grid-template-columns: 1fr;
             }
             
@@ -646,6 +687,13 @@
         <div class="header">
             <h1>🎉 LIAM'S BACHELOR PARTY 🎉</h1>
             <p>Come Party and Make a Lifelong Friend!</p>
+        </div>
+
+        <div class="sponser">
+            <div class="sponsor-with-logo">
+                <p>Sponsored by 107.9 The Coyote</p>
+                <img src="uploads/photos/sponser.png" alt="107.9 The Coyote Logo">
+            </div>
         </div>
 
         <div class="party-info">
@@ -719,10 +767,10 @@
         </div>
 
         <div class="comments-section">
-            <h2>💬 Leave a Message for Liam! Or, make a Suggestion for the Party!</h2>
+            <h2>💬 Leave a dare for Liam to do! He will preform the top 5 listed dares on Saturday</h2>
             <div class="comment-form">
                 <input type="text" id="nameInput" placeholder="Your name" class="comment-input">
-                <textarea id="messageInput" placeholder="Share a memory, give advice, or just say congrats!" class="comment-textarea"></textarea>
+                <textarea id="messageInput" placeholder="Make the dare wild" class="comment-textarea"></textarea>
                 <button onclick="addComment()" class="comment-btn">Post Message 📝</button>
             </div>
             <div class="comments-list" id="commentsList">
@@ -881,7 +929,7 @@
             const message = document.getElementById('messageInput').value.trim();
             
             if (!name || !message) {
-                alert('Please fill in both your name and message!');
+                alert('Please fill in both your name and dare!');
                 return;
             }
 
