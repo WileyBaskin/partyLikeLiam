@@ -503,6 +503,23 @@
             box-shadow: 0 6px 15px rgba(77, 166, 255, 0.5);
         }
 
+        .submit-label {
+            background: linear-gradient(45deg, #4da6ff, #87ceeb);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+            display: inline-block;
+            box-shadow: 0 3px 10px rgba(77, 166, 255, 0.3);
+        }
+
+        .submit-label:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(77, 166, 255, 0.5);
+        }        
+
         .editable-text {
             background: rgba(255, 255, 255, 0.1);
             border: 2px solid transparent;
@@ -825,7 +842,7 @@
         </div>
 
         <div class="guest-section">
-            <h2>💃 Some Guests You Might Meet! If You're Coming, Add Yourself!</h2>
+            <h2>💃 Some guests you might meet! If you're coming, add your photo and name!</h2>
             <div class="guest-grid" id="guestGrid">
             </div>
         </div>
@@ -929,13 +946,6 @@
             }
         ];
 
-        let guests = Array.from({ length: 1 }, (_, i) => ({
-            id: i + 1,
-            name: '',
-            description: '',
-            photo: null
-        }));
-
         // Initialize groomsmen cards
         function initializeGroomsmen() {
             const grid = document.getElementById('groomsmenGrid');
@@ -964,6 +974,45 @@
             });
         }
 
+        let guests = [            {
+                id: 1,
+                name: "Add your name!",
+                photo: null
+            }];
+        let guestIdCounter = 1;
+        const grid = document.getElementById('guestGrid');
+
+        grid.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const file = photoInput.files[0];
+            const name = nameInput.value.trim();
+            
+            if (!file || !name) {
+                alert('Please select a photo and add a name.');
+                return;
+            }
+
+            // // Disable button during upload
+            // uploadBtn.disabled = true;
+            // uploadBtn.textContent = 'Uploading...';
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const photo = {
+                    id: guestIdCounter++,
+                    src: e.target.result,
+                    name: name,
+                    uploadDate: new Date().toLocaleDateString()
+                };
+
+                guests.push(photo);
+                initializeGuest();
+            };
+            
+            reader.readAsDataURL(file);
+        });
+
         function initializeGuest() {
             const grid = document.getElementById('guestGrid');
             grid.innerHTML = '';
@@ -983,13 +1032,10 @@
                            placeholder="Guest Name" 
                            value="${guest.name}"
                            onchange="updateGuestName(${index}, this.value)">
-                    <textarea class="editable-text" 
-                              placeholder="Add a description about this guest..."
-                              onchange="updateGuestDescription(${index}, this.value)">${guest.description}</textarea>
                     <div class="guest-upload">
                         <input type="file" id="file${index}" accept="image/*" onchange="handlePhotoUpload(${index}, this)">
-                        <label for="file${index}" class="upload-label">
-                            ${guest.photo ? 'Change Photo' : 'Add Photo'} 📸
+                        <label for="file${index}" class="submit-label">
+                            ${guest.photo ? 'Add Guest' : 'Add Guest'}
                         </label>
                     </div>
                 `;
