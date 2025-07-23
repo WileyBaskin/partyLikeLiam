@@ -1001,7 +1001,7 @@
                 onchange="updateGuestName(${index}, this.value)">
                  <div class="guest-upload">
                 <input type="file" id="file${index}" accept="image/*" onchange="handlePhotoUpload(${index}, this)">
-                ${!guest.src ? `<label class="submit-label" onclick="createNewGuest(${index})">Add Guest</label>` : ''}                
+                ${!guest.src ? `<label class="submit-label" onclick="handleAddGuest(${index})">Add Guest</label>` : ''}                
                  </label>
                  </div>
                  `;
@@ -1012,14 +1012,15 @@
         function initializeLocalGuest() {
             const grid = document.getElementById('guestGrid');
             grid.innerHTML = '';
+            console.log(guests)
             guests.forEach((guest, index) => {
                 const card = document.createElement('div');
                 card.className = 'guest-card';
             card.innerHTML = `
                 <div class="guest-photo">
-                    ${guest.photo ?
-                    `<img src="${guest.photo}" alt="Guest ${guest.id}">` :
-                    `<div class="placeholder-photo" onclick="triggerFileInput(${index})">📷</div>`
+                    ${guest.src ?
+                    `<img src="uploads/photos/${guest.src}" alt="Guest ${guest.name}">` :
+                    `<img src="${guest.photo}" alt="Guest ${guest.name}">`
                 }
                 </div>
                 <input type="text"
@@ -1029,8 +1030,7 @@
                 onchange="updateGuestName(${index}, this.value)">
                  <div class="guest-upload">
                 <input type="file" id="file${index}" accept="image/*" onchange="handlePhotoUpload(${index}, this)">
-                 <label class="submit-label" onclick="createNewGuest(${index})">
-                ${guest.photo ? 'Add Guest' : 'Add Guest'}
+                ${!guest.src ? `<label class="submit-label" onclick="handleAddGuest(${index})">Add Guest</label>` : ''}   
                  </label>
                  </div>
                  `;
@@ -1106,6 +1106,11 @@
                 console.error(err);
             }
             await initializeGuest();
+        }
+
+        async function handleAddGuest(index) {
+            await createNewGuest(index);
+            location.reload();
         }
 
         function dataURLtoBlob(dataURL) {
