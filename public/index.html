@@ -882,6 +882,9 @@
     </div>
 
     <script>
+        let guests = [];
+        //index = 0;
+
         // Groomsmen data storage
         let groomsmen = [
             {
@@ -972,73 +975,65 @@
                 `;
                 grid.appendChild(card);
             });
-        }
+        };
 
-        let guests = [            {
-                id: 1,
-                name: "Add your name!",
-                photo: null
-            }];
-        let guestIdCounter = 1;
-        const grid = document.getElementById('guestGrid');
-
-        grid.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const file = photoInput.files[0];
-            const name = nameInput.value.trim();
-            
-            if (!file || !name) {
-                alert('Please select a photo and add a name.');
-                return;
-            }
-
-            // // Disable button during upload
-            // uploadBtn.disabled = true;
-            // uploadBtn.textContent = 'Uploading...';
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const photo = {
-                    id: guestIdCounter++,
-                    src: e.target.result,
-                    name: name,
-                    uploadDate: new Date().toLocaleDateString()
-                };
-
-                guests.push(photo);
-                initializeGuest();
-            };
-            
-            reader.readAsDataURL(file);
-        });
-
-        function initializeGuest() {
+        async function initializeGuest() {
             const grid = document.getElementById('guestGrid');
             grid.innerHTML = '';
+            const guestsResponse = await getGuests();
+            guests = await guestsResponse.json()
+            console.log(guests)
+            guests.forEach((guest, index) => {
+                            console.log(index)
+                const card = document.createElement('div');
+                card.className = 'guest-card';
+            card.innerHTML = `
+                <div class="guest-photo">
+                    ${guest.src ?
+                    `<img src="uploads/photos/${guest.src}" alt="Guest ${guest.name}">` :
+                    `<div class="placeholder-photo" onclick="triggerFileInput(${index})">📷</div>`
+                }
+                </div>
+                <input type="text"
+                class="name-input"
+                placeholder="Guest Name"
+                value="${guest.name}"
+                onchange="updateGuestName(${index}, this.value)">
+                 <div class="guest-upload">
+                <input type="file" id="file${index}" accept="image/*" onchange="handlePhotoUpload(${index}, this)">
+                ${!guest.src ? `<label class="submit-label" onclick="createNewGuest(${index})">Add Guest</label>` : ''}                
+                 </label>
+                 </div>
+                 `;
+                grid.appendChild(card);
+            });
+        }
 
+        function initializeLocalGuest() {
+            const grid = document.getElementById('guestGrid');
+            grid.innerHTML = '';
             guests.forEach((guest, index) => {
                 const card = document.createElement('div');
                 card.className = 'guest-card';
-                card.innerHTML = `
-                    <div class="guest-photo">
-                        ${guest.photo ? 
-                            `<img src="${guest.photo}" alt="Guest ${guest.id}">` :
-                            `<div class="placeholder-photo" onclick="triggerFileInput(${index})">📷</div>`
-                        }
-                    </div>
-                    <input type="text" 
-                           class="name-input" 
-                           placeholder="Guest Name" 
-                           value="${guest.name}"
-                           onchange="updateGuestName(${index}, this.value)">
-                    <div class="guest-upload">
-                        <input type="file" id="file${index}" accept="image/*" onchange="handlePhotoUpload(${index}, this)">
-                        <label for="file${index}" class="submit-label">
-                            ${guest.photo ? 'Add Guest' : 'Add Guest'}
-                        </label>
-                    </div>
-                `;
+            card.innerHTML = `
+                <div class="guest-photo">
+                    ${guest.photo ?
+                    `<img src="${guest.photo}" alt="Guest ${guest.id}">` :
+                    `<div class="placeholder-photo" onclick="triggerFileInput(${index})">📷</div>`
+                }
+                </div>
+                <input type="text"
+                class="name-input"
+                placeholder="Guest Name"
+                value="${guest.name}"
+                onchange="updateGuestName(${index}, this.value)">
+                 <div class="guest-upload">
+                <input type="file" id="file${index}" accept="image/*" onchange="handlePhotoUpload(${index}, this)">
+                 <label class="submit-label" onclick="createNewGuest(${index})">
+                ${guest.photo ? 'Add Guest' : 'Add Guest'}
+                 </label>
+                 </div>
+                 `;
                 grid.appendChild(card);
             });
         }
@@ -1055,7 +1050,7 @@
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     guests[index].photo = e.target.result;
-                    initializeGuest(); // Refresh the display
+                    initializeLocalGuest(); // Refresh the display
                 };
                 reader.readAsDataURL(file);
             }
@@ -1070,6 +1065,60 @@
         function updateGuestDescription(index, description) {
             guests[index].description = description;
         }
+
+        async function createNewGuest(index) {
+            const guest = guests[index]
+            const formData = new FormData();
+            formData.append('name', guest.name);
+
+            if (guest.photo instanceof File || guest.photo instanceof Blob) {
+                formData.append('photo', guest.photo);
+            } else if (typeof guest.photo === 'string') {
+                // If it's a base64 string, convert it to a Blob
+                const blob = dataURLtoBlob(guest.photo);
+                const picName = `${guest.name}.jpg`;
+                formData.append('photo', blob, picName);
+            } else {
+                console.warn('Photo is not a valid file type:', guest.photo);
+            }
+
+            console.log('FormData contents:');
+            for (let [key, value] of formData.entries()) {
+                console.log(key, value);
+            }
+
+
+             try {
+                const response = await fetch('/api/guests', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    return;
+                } else {
+                    alert('Error: ' + data.error);
+                }
+            } catch (err) {
+                alert('Failed to create guest');
+                console.error(err);
+            }
+            await initializeGuest();
+        }
+
+        function dataURLtoBlob(dataURL) {
+            const arr = dataURL.split(',');
+            const mime = arr[0].match(/:(.*?);/)[1];
+            const bstr = atob(arr[1]);
+            let n = bstr.length;
+            const u8arr = new Uint8Array(n);
+            while(n--) {
+                u8arr[n] = bstr.charCodeAt(n);
+            }
+            return new Blob([u8arr], {type: mime});
+        }    
 
         // Countdown timer
         function updateCountdown() {
@@ -1175,6 +1224,21 @@
                 console.error(err);
             }
         }
+
+        async function getGuests(){
+            try {
+                const response = await fetch('/api/guests', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                return response;
+            } catch (err) {
+                alert('Failed to get guests.');
+                console.error(err);
+            }
+        }        
 
         function escapeHtml(text) {
             const div = document.createElement('div');

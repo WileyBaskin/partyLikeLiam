@@ -7,6 +7,9 @@ const cors = require('cors');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+currentPicDirectory = "";
+
+
 // Middleware
 app.use(cors());
 app.use(express.json());
@@ -32,7 +35,8 @@ const storage = multer.diskStorage({
     },
     filename: function (req, file, cb) {
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        cb(null, 'groom-' + uniqueSuffix + path.extname(file.originalname));
+        currentPicDirectory = file.originalname;
+        cb(null, file.originalname);
     }
 });
 
@@ -53,7 +57,9 @@ const upload = multer({
 
 // Data file paths
 const COMMENTS_FILE = path.join(__dirname, 'data', 'comments.json');
+const GUESTS_FILE = path.join(__dirname, 'data', 'guests.json');
 const SETTINGS_FILE = path.join(__dirname, 'data', 'settings.json');
+
 
 // Helper functions for data persistence
 async function loadComments() {
@@ -69,6 +75,25 @@ async function saveComments(comments) {
     try {
         console.log('Saving to:', COMMENTS_FILE)
         await fs.writeFile(COMMENTS_FILE, JSON.stringify(comments, null, 2));
+    } catch (error) {
+        console.error('Error saving comments:', error);
+        throw error;
+    }
+}
+
+async function loadGuests() {
+    try {
+        const data = await fs.readFile(GUESTS_FILE, 'utf8');
+        return JSON.parse(data);
+    } catch (error) {
+        return [];
+    }
+}
+
+async function saveGuests(guests) {
+    try {
+        console.log('Saving to:', GUESTS_FILE)
+        await fs.writeFile(GUESTS_FILE, JSON.stringify(guests, null, 2));
     } catch (error) {
         console.error('Error saving comments:', error);
         throw error;
@@ -140,6 +165,53 @@ app.post('/api/comments', async (req, res) => {
         res.status(201).json(newComment);
     } catch (error) {
         res.status(500).json({ error: 'Failed to add comment' });
+    }
+});
+
+// Get all guests
+app.get('/api/guests', async (req, res) => {
+    try {
+        const guests = await loadGuests();
+        res.json(guests);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to load comments' });
+    }
+});
+
+// Add a new guest
+app.post('/api/guests', upload.single('photo'), async (req, res) => {
+    //console.log("trying to save in server")
+    
+    try {
+        const guest = req.body
+        const name = guest.name
+        console.log("before name check");
+
+        if (!name) {
+            return res.status(400).json({ error: 'Name is required' });
+        }
+
+        console.log("before load guests");
+        const guests = await loadGuests();
+        console.log("before new guest");
+
+        const newGuest = {
+            id: guest.id,
+            name: name.trim(),
+            src: currentPicDirectory,
+            photo: guest.photo
+        };
+        console.log("after new guest");
+
+        guests.push(newGuest); // Add to beginning of array
+    
+        console.log("before save guest");
+
+        await saveGuests(guests);
+        
+        res.status(201).json(newGuest);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to add guest' });
     }
 });
 
