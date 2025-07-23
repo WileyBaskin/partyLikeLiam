@@ -706,6 +706,27 @@
             opacity: 0.9;
         }
 
+        .code-box {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            border-radius: 20px;
+            margin-bottom: 40px;
+            backdrop-filter: blur(10px);
+        }
+        input[type="text"] {
+        padding: 8px;
+        width: 80%;
+        margin-bottom: 10px;
+        }
+        button {
+        padding: 8px 12px;
+        cursor: pointer;
+        }
+        .error {
+        color: red;
+        margin-top: 10px;
+        }
+
         @media (max-width: 768px) {
             .groom-content {
                 grid-template-columns: 1fr;
@@ -869,6 +890,14 @@
             </div>
         </div>
 
+        <div class="code-box">
+            <h3>Enter Password for the Party Address</h3>
+            <input type="text" id="accessCode" placeholder="Enter password" />
+            <br>
+            <button onclick="checkCode()">Submit</button>
+            <div id="errorMsg" class="error"></div>
+        </div>        
+
         <div class="comments-section">
             <h2>💬 Leave a dare for Liam to do! He will preform the top 5 listed dares on Saturday</h2>
             <div class="comment-form">
@@ -882,6 +911,18 @@
     </div>
 
     <script>
+
+        function checkCode() {
+            const correctCode = "drunk";  // Change this to your desired code
+            const userInput = document.getElementById("accessCode").value.trim();
+
+            if (userInput === correctCode) {
+            window.location.href = "https:/partylikeliam.com/179849582945t7839fffsn"; // Change this to your target URL
+            } else {
+            document.getElementById("errorMsg").textContent = "Incorrect password. Try again.";
+            }
+        }
+
         let guests = [];
         //index = 0;
 
