@@ -1014,18 +1014,19 @@
 
 
     <script>
-
+        const ADMIN_PASSWORD = "drunk"; 
         function checkCode() {
-            const correctCode = "drunk";  // Change this to your desired code
+             // Change this to your desired code
             const userInput = document.getElementById("accessCode").value.trim();
 
-            if (userInput === correctCode) {
+            if (userInput === ADMIN_PASSWORD) {
             window.location.href = "https://www.partylikeliam.com/179849582945t7839fffsn/"; // Change this to your target URL
             } else {
             document.getElementById("errorMsg").textContent = "Incorrect password. Try again.";
             }
         }
 
+        let enteredPass = "";
         let guests = [];
         //index = 0;
 
@@ -1146,7 +1147,7 @@
                  ${guest.src ? 'disabled' : ''}>
                  <div class="guest-upload">
                 <input type="file" id="file${index}" accept="image/*" onchange="handlePhotoUpload(${index}, this)">
-                ${!guest.src ? `<label class="submit-label" onclick="handleAddGuest(${index})">Add Guest</label>` : ''}                
+                ${!guest.src ? `<label class="submit-label" >Add Guest</label>` : ''}                
                  </label>
                  </div>
                  `;
@@ -1175,7 +1176,7 @@
                 onchange="updateGuestName(${index}, this.value)"
                  ${guest.src ? 'disabled' : ''}>
                  <div class="guest-upload">
-                <input type="file" id="file${index}" accept="image/*" onchange="handlePhotoUpload(${index}, this)">
+                <input type="file" id="file${index}" accept="image/*" >
                 ${!guest.src ? `<label class="submit-label" onclick="handleAddGuest(${index})">Add Guest</label>` : ''}   
                  </label>
                  </div>
@@ -1255,9 +1256,24 @@
         }
 
         async function handleAddGuest(index) {
-            await createNewGuest(index);
-            location.reload();
+            const isAuthorized = promptForPassword();
+    if (isAuthorized) {
+        await createNewGuest(index);
+        location.reload();
+    }
         }
+        function promptForPassword() {
+
+    
+    const password = prompt("Please enter the password to add a guest:");
+    
+    if (password === ADMIN_PASSWORD) {
+        return true;
+    } else if (password !== null) {
+        alert("Incorrect password. No guest added.");
+        return false;
+    }
+        }        
 
         function dataURLtoBlob(dataURL) {
             const arr = dataURL.split(',');
